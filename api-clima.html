@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title> Datos de ciudades </title>
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script>
+            
+           /* function attach_handlres(){                
+                for (let j=1; j<=151; j++){
+                    let variable = '<img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+j+'.png">';
+                    $('p').append(variable);
+                    console.log(variable);
+                }
+                
+            } */
+
+            $(document).ready(function() {
+                console.log('El documento está listo! ');
+                $('form').submit(function() {
+                    var city = $("#buscador").val();
+                    console.log(city);
+                   
+
+                    $.get("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=6e8ad1ff2829161120780c1e5f53becc", function(res) {
+                        console.log(res);
+                        console.log(res.main.temp-273);
+                        $('p').html('<h1>'+city+' : '+res.weather[0].main+ '</h1>');
+                        let temperatura = res.main.temp-273;
+                        let lon = res.coord.lon;
+                        let lat = res.coord.lat;
+                        temperatura=Math.round(temperatura * 100) / 100
+                        $('#temp').html('<h1>Temperatura promedio: '+temperatura+ '</h1>');
+                        $('#coord').html('<h1>Coord: ('+lon+' , ' +lat+ ') </h1>');
+                        
+                        
+                        
+                        
+                    }, 'json');
+                    return false;
+                });
+                //attach_handlres();
+            });
+
+        </script>
+
+        <style>
+            body *{
+                outline: 1px solid red;
+            }
+            
+        </style>
+    </head>
+
+    <body>
+        <form>
+            <div class="col m-1 p-5">
+                <div class="form-group">
+                    <label for="buscador">Aplicación del tiempo de ciudades del mundo </label>
+                    <input type="city" class="form-control" id="buscador" placeholder="Ingrese ciudad">
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+          </form>
+
+          <p></p>
+          <p id="temp"></p>
+          <p id="coord"></p>
+          <p id="lat"></p>
+        
+
+    </body>
+</html>
+
